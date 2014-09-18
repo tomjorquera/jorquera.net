@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Tom Jorquera personal website">
+    <meta name="author" content="Tom Jorquera">
+
+    <title>Tom Jorquera personal webpage</title>
+    
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/blog.css" rel="stylesheet">
+    
+    <!-- My theme files -->
+    <link href="css/theme.css" rel="stylesheet">
+    <link href="css/movables.css" rel="stylesheet">
+  </head>
+  
+  <body class="js-disabled">
+
+    <div id="back" class="moveable"></div>
+
+    <div class="container">
+      
+      <div class="blog-header">
+        <h1 class="blog-title">Tom Jorquera</h1>
+	<div class="btn-group disappear-no-js">
+	  
+	  
+	  <button type="button" class="info-button main-button btn btn-lg moveable">
+	    <span class="glyphicon glyphicon-question-sign"></span>
+	  </button>
+
+	  <button type="button" class="bg-button main-button btn btn-lg moveable">
+	    <span class="glyphicon glyphicon-fullscreen"></span>
+	  </button>
+	  
+	  <button type="button" class="error-button sec-button btn btn-lg moveable">
+	    <span class="glyphicon glyphicon-warning-sign"></span>
+	  </button>
+	  
+	  <button type="button" class="reload-button sec-button btn btn-lg moveable">
+	    <span class="glyphicon glyphicon-repeat"></span>
+	  </button>
+	  
+	</div>
+      </div>
+      
+      <div id="boids-info" class="alert alert-info alert-dismissible text-justify" role="alert" style="display:none;">
+	<button type="button" class="close" onclick="$('#boids-info').hide();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<p>In the background you see an implementation of the <a href="https://en.wikipedia.org/wiki/Boids" class="alert-link">boids program</a>, simulating the flocking behavior of animals such as birds or fish.</p>
+	<p>This program is an example of a very simple self-organized system. The movements of the boids are not decided by a central controller, but locally by the boids themselves.</p>
+	<p>In a confined space, the boids will eventually converge towards a single, large swarm. Since it would be a little boring, the model here is modified slightly for the boids to spread out if they start to feel too much cramped.</p>
+	
+	<p>If you want to see them better, you can click the button right next to this one to bring the demo to the foreground (you can click it again to bring it back in the background).</p>
+      </div>
+
+      <div id="boids-error" class="alert alert-danger alert-dismissible text-justify" role="alert" style="display:none;">
+	<button type="button" class="close" onclick="$('#boids-error').hide();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	This site should show a cool demo of the <a href="https://en.wikipedia.org/wiki/Boids" class="alert-link">boids program</a>, a simple example of self-organized system, but it seems to be a little too heavy on you browser so the demo was disabled to avoid degrading your performances. You can try to re-enable the demo by hitting the reload button just beside this one.
+      </div>
+
+      <div class="main moveable row">
+        <div class="col-sm-9 blog-main">
+
+	  <ul id="mainTab" class="nav nav-tabs disappear-no-js" role="tablist">
+	    <li class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+	    <li><a href="#cv" role="tab" data-toggle="tab">C.V.</a></li>
+	    <li><a href="#learning" role="tab" data-toggle="tab">Learning</a></li>
+	  </ul>
+
+	  <div class="content tab-content text-justify">
+
+	    <div id="home" class="tab-pane active">
+	      <p>I am currently working as a postdoctoral fellow at the <a href="http://www.irit.fr">Institut de Recherche en Informatique de Toulouse</a>.</p>
+	      <p>I obtained my PhD in Artificial Intelligence in 2013 at the Toulouse University, France. My PhD topic concerned the <em>solving of complex continuous optimization problems using a multi-agents system</em>.</p>
+	      <hr>
+	      <h4>A few topics of interest</h4>
+
+	      <p>Regarding computer sciences, my topics of choice are:
+		<ul>
+		  <li>Emergent problem solving</li>
+		  <li>Self-adaptive systems engineering</li>
+		  <li>Complex systems modeling</li>
+		</ul>
+	      </p>
+	      
+	      <p>These topics naturally led me to a related, more technical subject: the engineering of distributed, asynchronous systems.</p>
+
+	      <p>I am an enthusiastic user of <a href="http://en.wikipedia.org/wiki/Free_and_open-source_software">FOSS</a>, especially anything Linux-related and Mozilla software. My setup of choice:
+		<ul>
+		  <li>A <a href="http://www.debian.org">Debian testing</a> with a mostly bare <a href="http://dwm.suckless.org/">DWM</a></li>
+		  <li><a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a> for the web, <a href="https://www.mozilla.org/en-US/thunderbird/">Thunderbird</a> for the mail</li>
+		  <li><a href="http://eclipse.org">Eclipse</a> for Java, <a href="http://www.vim.org">Vim</a> or <a href="https://www.gnu.org/software/emacs/">GNU Emacs</a> + <a href="https://gitorious.org/evil/pages/Home">evil-mode</a> for the rest (didn't you hear? The Holy War is over and both sides won)</li>
+		  <li><a href="http://git-scm.com">Git</a> everywhere I can</li>
+		</ul>
+	      </p>
+
+	      <p>I practice or have practiced various sports: french stick fighting, french boxing, fencing and stage combat fencing.</p>
+
+	      <hr class="appear-no-js">
+	    </div>
+	    
+	    <div id="cv" class="tab-pane appear-no-js">
+	      <h2 class="appear-no-js">C.V.</h2>
+	      
+	      
+	      <h3>Formation</h3>
+	      <div class="panel panel-default">
+		<div class="panel-body">
+
+		  <table class="table">
+		    <thead>
+		      <tr>
+			<th>Date</th>
+			<th>Degree</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+			<td>2013</td>
+			<td>Artificial Intelligence PhD given by the Toulouse University</td>
+		      </tr>
+		      <tr>
+			<td>2009</td>
+			<td>Computer Sciences Master<p>specialization: Interactions, Cooperation and Complex Systems </p></td>
+		      </tr>
+		      <tr>
+			<td>2006</td>
+			<td>Mathematics for Social Sciences DEUG (two-years french degree)</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		  <hr>
+		  <h4>PhD Thesis</h4>
+		  <p>The topic of my thesis was <em>An Adaptive Multi-Agent System for Self-Orginizing Continuous Optimization</em>.</p>
+		  <p>You can read the thesis <a href="files/Jorquera_thesis.pdf">here</a> (PDF version).</p>
+		  <p>In 2014, I obtained the french <em>qualification aux fonctions de maître de conférences</em>, which allowed me to candidate for tenured positions in french universities. This qualification is obtained after an examination of both the scientific and teaching work of a PhD holder.</p>
+		</div>
+	      </div>
+	      
+	      <h3>Professional Experiences</h3>
+	      <div class="panel panel-default">
+		<div class="panel-body">
+		  <table class="table">
+		    <thead>
+		      <tr>
+			<th>Date</th>
+			<th>Position</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+			<td>2014</td>
+			<td>Postdoctoral fellow at the Institut de Recherche en Informatique de Toulouse, France</td>
+		      </tr>
+		      <tr>
+			<td>2013 2014</td>
+			<td>Temporary teacher and researcher (french ATER) at the Université Toulouse le Mirail, France</td>
+		      </tr>
+		      <tr>
+			<td>2010 2013</td>
+			<td> Research assistant at the Institut de Recherche en Informatique de Toulouse, France (in the context of my PhD)</td>
+		      </tr>
+		      <tr>
+			<td>2009 2010</td>
+			<td>Reseach engineer at the Institut de Recherche en Informatique de Toulouse, France</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</div>
+	      </div>
+	      
+	      <h3>Academics</h3>
+	      <div class="panel panel-default">
+		<div class="panel-body">
+		  <h4>Teaching</h4>
+		  I had some great teaching opportunities during my PhD. Here are some of the courses in which I intervened (in no particular order), along with the associated programming languages.
+		  <table class="table">
+		    <thead>
+		      <tr>
+			<th>Course</th>
+			<th>Programming Languages</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+			<td>Methods and languages for parallelism</td>
+			<td>C</td>
+		      </tr>
+		      <tr>
+			<td>Advanced Functional Programming</td>
+			<td>OCaml</td>
+		      </tr>
+		      <tr>
+			<td>Programming Project</td>
+			<td>Java, OCaml</td>
+		      </tr>
+		      <tr>
+			<td>Collective Problem Resolution</td>
+			<td>NetLogo</td>
+		      </tr>
+		      <tr>
+			<td>Relational Databases</td>
+			<td>SQL</td>
+		      </tr>
+		      <tr>
+			<td>Advanced Programming Concepts</td>
+			<td>Visual Basic (yikes!)</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		  <hr>
+		  <h4>Publications</h4>
+		  The complete list of my publications can be accessed on <a href="http://www.irit.fr/Publications,279?code=5355&amp;nom=Jorquera+Tom">my IRIT publications page</a>.
+		</div>
+	      </div>
+	      
+	      <a href="files/Jorquera_CV.pdf">My complete CV (french PDF version)</a>
+	      <hr class="appear-no-js">
+	    </div>
+
+	    <div id="learning" class="tab-pane appear-no-js">
+	      <h2 class="appear-no-js">Learning</h2>
+	      <p>I am passionate learner, and try to spend an important part of my free time in self-training.</p>
+
+	      <p>I am (obviously) mainly interested in complex systems and computer-related topics, but try to keep up on a variety of subjects. As my favorite author <a href="https://en.wikipedia.org/wiki/Boris_Vian">Boris Vian</a> said: <em>be an expert of everything!</em></p>
+	      <hr>
+	      <h4>Polyglot Programmer</h4>
+	      <p>I am a firm believer in the idea of being a polyglot programmer. I mostly program in Java and Scala, but try as much as possible to study other programming languages and paradigms. I regularly code in C, and dabble in languages such as Haskell, OCaml, Python, JavaScript, Rust and various Lisp dialects.</p>
+	      <hr>
+	      <h4>Massive Open Online Courses (MOOCs)</h4>
+	      <p>My main source of education is still books, but MOOCs are a great opportunity for avid learners. While I am not sure they will ever completely replace "old-school" uni teaching, they sure are a wonderful tool for continuous learning. <a href="http://coursera.org">Coursera</a> is currently my platform of choice in this regard.</p>
+	      Some of the courses I followed (links to statements of accomplishment when available):
+	      <ul>
+		<li><a href="files/Coursera%20reactive%202014.pdf">Principles of Reactive Programming</a></li>
+		<li><a href="files/Coursera%20crypto%202014.pdf">Cryptography I</a></li>
+		<li><a href="files/Coursera%20marketing%202014.pdf">An Introduction to Marketing</a></li>
+		<li><a href="files/Coursera%20modelthinking%202014.pdf">Model Thinking</a></li>
+		<li>Learning How to Learn</li>
+		<li><a href="files/Coursera%20money2%202014.pdf">Economics of Money and Banking, Part 2</a></li>
+		<li>Introduction to Finance</li>
+	      </ul>
+	      <hr>
+	      <h4>Online Challenges</h4>
+	      <p>I am currently undertaking the <a href="http://eudyptula-challenge.org/">Eudyptula Challenge</a>, as an introduction to the linux kernel.</p>
+	    </div>
+
+	  </div><!-- /.content -->
+
+        </div><!-- /.blog-main -->
+
+
+        <div class="moveable col-sm-3 blog-sidebar">
+
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About Me</h4>
+	    <img src="files/photo.jpg" class="img-circle img-responsive" alt="a picture of me">
+	    <p>I am a <script>
+	    	// this should degrade cleanly
+	    	// (btw, now you know my birthday date, so no excuse for not giving me a present)
+		var d1=new Date(1986, 11, 28);
+		var d2=new Date();
+		var milli=d2-d1;
+		var milliPerYear=1000*60*60*24*365.26;
+		var yearsApart = Math.floor(milli/milliPerYear);
+		document.write(yearsApart + " years old ");
+	      </script>computer scientist and engineer with a passion for complex systems</p>
+          </div>
+
+          <div class="sidebar-module">
+            <h4>Contact</h4>
+            <ol class="list-unstyled">
+	      <li>
+		<script>document.write('<span class="glyphicon glyphicon-envelope"></span> '+'<'+'a'+' '+'h'+'r'+'e'+'f'+'='+"'"+'m'+'a'+'i'+'l'+'&'+'#'+'1'+'1'+'6'+';'+'o'+'&'+'#'+'5'+'8'+';'+'&'+'#'+'3'+'7'+';'+'7'+'&'+'#'+'5'+'2'+';'+'o'+'m'+'&'+'#'+'6'+'4'+';'+'j'+'%'+'6'+'F'+'r'+'%'+'7'+'&'+'#'+'4'+'9'+';'+'&'+'#'+'1'+'1'+'7'+';'+'e'+'r'+'a'+'%'+'2'+'E'+'%'+'6'+'&'+'#'+'6'+'9'+';'+'e'+'t'+"'"+'>'+'t'+'&'+'#'+'1'+'1'+'1'+';'+'m'+'&'+'#'+'6'+'4'+';'+'j'+'o'+'r'+'&'+'#'+'1'+'1'+'3'+';'+'u'+'&'+'#'+'1'+'0'+'1'+';'+'r'+'a'+'&'+'#'+'4'+'6'+';'+'n'+'e'+'t'+'<'+'/'+'a'+'>');</script>
+		<noscript>email: tom _at_ jorquera _dot_ net</noscript></li>
+            </ol>
+          </div>
+
+        </div><!-- /.blog-sidebar -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    <!-- js script files
+	 ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/modernizr.custom.86055.js"></script>
+    <script src="js/gl-matrix-min.js"></script>
+
+    <!-- Bootstrap JavaScript libs -->
+    <script src="js/tab.js"></script>
+    <script src="js/alert.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    
+    <script src="js/my-boids.js"></script>
+    <script>
+      // if the browser is recent enough, load the fun stuff
+      if (Modernizr.opacity && Modernizr.cssanimations && Modernizr.canvas){Modernizr.load('js/main.js');}
+    </script>
+    
+    
+  </body>
+</html>

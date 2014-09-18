@@ -1,0 +1,76 @@
+@opacity: 0.3;
+
+@info-color: #55EEFF;
+@error-color: red;
+
+.moveable {
+    transition: all 0.8s ease-out;
+}
+
+#back {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+
+    background-color: #CCCCCC;
+
+    opacity: 0.3;
+}
+
+#back.moved {
+    opacity: 1;
+}
+
+.container {
+	position: relative;
+	z-index: 1;
+}
+
+.main.moved {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.btn {
+    color: grey;
+    background: none;
+    padding: 8px;
+}
+
+.active-btn {
+    color: @info-color;
+    &:hover {color: @info-color - #707070;};
+}
+
+.main-button {
+    opacity: 0.35;  
+    &:hover {opacity: 1;};
+}
+
+.main-button.moved {
+    .active-btn;
+    opacity: 1;
+}
+
+.sec-button {
+    transform: translateY(-50%);
+    visibility: hidden;
+    opacity: 0;
+}
+
+.sec-button.moved {
+    opacity: 0.35;
+    visibility: visible;
+    transform: translateY(0%);
+}
+
+.error-button.moved {
+    color: @error-color;
+    &:hover {opacity: 1;};
+}
+
+.reload-button.moved {
+    &:hover {opacity: 1};
+}
