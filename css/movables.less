@@ -1,7 +1,11 @@
 @opacity: 0.3;
 
-@info-color: #55EEFF;
-@error-color: red;
+// colors from bootstrap theme
+@brand-primary: #428bca;
+@brand-success: #5cb85c;
+@brand-info:    #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger:  #d9534f;
 
 .moveable {
     transition: all 0.8s ease-out;
@@ -40,8 +44,8 @@
 }
 
 .active-btn {
-    color: @info-color;
-    &:hover {color: @info-color - #707070;};
+    color: @brand-info;
+    &:hover {color: @brand-primary;};
 }
 
 .main-button {
@@ -67,7 +71,7 @@
 }
 
 .error-button.moved {
-    color: @error-color;
+    color: @brand-danger;
     &:hover {opacity: 1;};
 }
 
