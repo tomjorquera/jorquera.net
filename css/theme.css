@@ -26,6 +26,11 @@ html {
     font-size: 16px;
 }
 
+.table-borderless td {
+    border: none;
+    padding-right: 0.5em;
+}
+
 canvas {
     /* avoid a bug in android browsers */
     position: absolute;
