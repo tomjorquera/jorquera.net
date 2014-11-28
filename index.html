@@ -267,12 +267,12 @@
 	    <p>I am a <script>
 	    	// this should degrade cleanly
 	    	// (btw, now you know my birthday date, so no excuse for not giving me a present)
-		var d1=new Date(1986, 11, 28);
+		var d1=new Date("1986-11-28");
 		var d2=new Date();
 		var milli=d2-d1;
 		var milliPerYear=1000*60*60*24*365.26;
 		var yearsApart = Math.floor(milli/milliPerYear);
-		document.write(yearsApart + " years old ");
+		document.write(yearsApart + "-year-old ");
 	      </script>computer scientist and engineer with a passion for complex systems</p>
           </div>
 
