@@ -49,11 +49,11 @@ body.js-enabled  h2.appear-no-js,hr.appear-no-js {
     display: none;
 }
 
-.table-courses th:nth-child(2),td:nth-child(2) {
+.table-courses th:nth-child(2), .table-courses td:nth-child(2) {
     text-align: right;
 }
 
-.table-courses th:last-child,td:last-child {
+.table-courses th:last-child, .table-courses td:last-child {
     text-align: center;
 }
 
