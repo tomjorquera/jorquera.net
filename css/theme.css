@@ -48,3 +48,20 @@ body.js-disabled  .appear-no-js {
 body.js-enabled  h2.appear-no-js,hr.appear-no-js {
     display: none;
 }
+
+.table-courses th:nth-child(2),td:nth-child(2) {
+    text-align: right;
+}
+
+.table-courses th:last-child,td:last-child {
+    text-align: center;
+}
+
+.table-courses-legend td {
+    text-align: left;
+}
+
+/* symbol transparent placeholder (useful for alignment) */
+.symbol-placeholder {
+    color: transparent !important;
+}
