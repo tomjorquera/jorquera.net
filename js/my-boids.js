@@ -31,7 +31,8 @@ function Swarm(canvas, buffer) {
     }
 
     function Boid() {
-        this.pos = vec2.fromValues(Math.random() * width, Math.random() * height);
+        this.pos = vec2.fromValues(Math.random() * width,
+                                   Math.random() * height);
         var vx = -2 + 4 * Math.random();
         var vy = -2 + 4 * Math.random();
 
@@ -48,9 +49,12 @@ function Swarm(canvas, buffer) {
         ctx.strokeStyle = 'white';
         ctx.beginPath();
         // round coordinates to integer (huge speedup on canvas)
-        ctx.arc((this.pos[0] + 0.5)|0,  (this.pos[1] + 0.5)|0, BOID_SPEED * queueLength + radius, 0, 2 * Math.PI);
+        ctx.arc((this.pos[0] + 0.5)|0,
+                (this.pos[1] + 0.5)|0,
+                BOID_SPEED * queueLength + radius, 0, 2 *
+                Math.PI);
         ctx.fill();
-    }
+    };
 
     Boid.prototype.draw = function(ctx) {
 
@@ -77,7 +81,7 @@ function Swarm(canvas, buffer) {
         ctx.lineTo(b1[0], b1[1]);
         ctx.fill();
 
-    }
+    };
 
     Boid.prototype.checkBorders = function() {
         var correction = vec2.create();
@@ -97,7 +101,7 @@ function Swarm(canvas, buffer) {
         // add corrections to steer the boid inside the borders
         vec2.add(this.velocity, this.velocity, correction);
         vec2.limit(this.velocity, this.velocity, BOID_SPEED);
-    }
+    };
 
     Boid.prototype.step = function() {
 
@@ -116,20 +120,23 @@ function Swarm(canvas, buffer) {
                   && this != boids[i]
               ) {
 
-                nbNeighbors++;
+                  nbNeighbors++;
 
-                // separate (non-linear relation)
-                var scaledSeparation = vec2.sub(vec2.create(), this.pos, n.pos);
-                vec2.scale(scaledSeparation, scaledSeparation, 1/(dist * dist));
-                vec2.add(separate, separate, scaledSeparation);
+                  // separate (non-linear relation)
+                  var scaledSeparation = vec2.sub(vec2.create(),
+                                                  this.pos, n.pos);
+                  vec2.scale(scaledSeparation,
+                             scaledSeparation,
+                             1/(dist * dist));
+                  vec2.add(separate, separate, scaledSeparation);
 
-                // align
-                vec2.add(align, align, n.velocity);
+                  // align
+                  vec2.add(align, align, n.velocity);
 
-                // cohere
-                vec2.add(cohere, cohere, n.pos);
+                  // cohere
+                  vec2.add(cohere, cohere, n.pos);
 
-            }
+              }
         }
 
         if(nbNeighbors > 0) {
@@ -169,12 +176,12 @@ function Swarm(canvas, buffer) {
         this.pos = vec2.add(vec2.create(), this.pos, this.velocity);
 
         this.checkBorders();
-    }
+    };
 
     // limit the magnitude of a vector without changing its direction
     vec2.limit = function(out, a, n) {
         var x = a[0],
-        y = a[1];
+            y = a[1];
         var len = x*x + y*y;
         if (len > n * n) {
             len = n / Math.sqrt(len);
@@ -186,7 +193,8 @@ function Swarm(canvas, buffer) {
 
     Swarm.prototype.step = function() {
         // adjust canvas if needed
-        if (buffer.width != window.innerWidth || buffer.height != window.innerHeight){
+        if (buffer.width != window.innerWidth ||
+            buffer.height != window.innerHeight) {
             // some margin for the scrollbar
             width = window.innerWidth - 20;
             height = window.innerHeight;
@@ -201,15 +209,17 @@ function Swarm(canvas, buffer) {
             canvas.height = window.innerHeight;
         }
 
+        var i, boid;
+
         // remove old boids
-        for (var i = 0; i < boids.length; i++) {
-            var boid = boids[i];
+        for (i = 0; i < boids.length; i++) {
+            boid = boids[i];
             boid.undraw(context);
         }
 
         // move boids
-        for (var i = 0; i < boids.length; i++) {
-            var boid = boids[i];
+        for (i = 0; i < boids.length; i++) {
+            boid = boids[i];
             boid.step();
             boid.draw(context);
         }
@@ -224,6 +234,6 @@ function Swarm(canvas, buffer) {
         // draw buffer into canvas
         canvas.getContext('2d').drawImage(buffer,0,0);
 
-    }
+    };
 
 }

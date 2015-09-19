@@ -20,7 +20,7 @@ function SwarmControl(canvas, buffer) {
 
         canvas.style.display="block";
         canvas.style.opacity=1;
-        canvas.filter = "alpha(opacity=100);" /* For IE8 and earlier */
+        canvas.filter = "alpha(opacity=100);"; /* For IE8 and earlier */
 
         // FPS monitoring
         var FPSbound = 15;
@@ -30,9 +30,9 @@ function SwarmControl(canvas, buffer) {
             frameNumber : 0,
             getFPS : function(){
                 this.frameNumber++;
-                var d = new Date().getTime(),
-                currentTime = ( d - this.startTime ) / 1000,
-                result = Math.floor( ( this.frameNumber / currentTime ) );
+                var d = new Date().getTime();
+                var currentTime = ( d - this.startTime ) / 1000;
+                var result = Math.floor( ( this.frameNumber / currentTime ) );
 
                 if( currentTime > 1 ){
                     this.startTime = new Date().getTime();
@@ -62,20 +62,20 @@ function SwarmControl(canvas, buffer) {
                 // not enough performances, better stop
                 that.stop(timer);
             }
-        }
+        };
 
         timer = setInterval(step, 50);
 
         SwarmUI.inactive();
-    }
+    };
 
     SwarmControl.prototype.stop = function(timer) {
         clearInterval(timer);
         canvas.style.display="none";
         canvas.style.opacity=0;
-        canvas.filter = "alpha(opacity=0);" /* For IE8 and earlier */
+        canvas.filter = "alpha(opacity=0);"; /* For IE8 and earlier */
         SwarmUI.error();
-    }
+    };
 }
 
 function SwarmUI() {
@@ -105,7 +105,7 @@ function SwarmUI() {
             $('#boids-error').hide();
             $('#boids-info').show();
         }
-    }
+    };
 
     SwarmUI.prototype.active = function() {
         isActive = true;
@@ -129,7 +129,7 @@ function SwarmUI() {
             $('#boids-error').hide();
             $('#boids-info').show();
         }
-    }
+    };
 
     SwarmUI.prototype.error = function() {
         isActive = false;
@@ -155,15 +155,15 @@ function SwarmUI() {
         } else {
             $('#boids-error').hide();
         }
-    }
+    };
 
     SwarmUI.prototype.toggleActive = function() {
         isActive ? this.inactive() : this.active();
-    }
+    };
 
     SwarmUI.prototype.toggleError = function() {
         error ? this.inactive() : this.error();
-    }
+    };
 }
 
 var SwarmControl;
@@ -178,7 +178,7 @@ $(document).ready( function() {
         var hash = window.location.hash;
         var selector = hash ? 'a[href="' + hash + '"]' : 'li.active > a';
         $(selector).tab('show');
-    }
+    };
     // Set the correct tab when the page loads
     showTabFromHash();
     window.scrollTo(0, 0);
