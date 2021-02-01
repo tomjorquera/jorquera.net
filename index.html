@@ -61,18 +61,7 @@
         </div>
       </div>
 
-      <div id="boids-info" class="alert alert-info alert-dismissible text-justify" role="alert" style="display:none;">
-        <button type="button" class="close" onclick="$('#boids-info').hide();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <p>In the background you see an implementation of the <a href="https://en.wikipedia.org/wiki/Boids" class="alert-link">boids program</a>, simulating the flocking behavior of animals such as birds or fish.</p>
-        <p>This program is an example of a very simple self-organized system. The movements of the boids are not decided by a central controller, but locally by the boids themselves.</p>
-        <p>In a confined space, the boids will eventually converge towards a single, large swarm. Since it would be a little boring, the model here is modified slightly for the boids to spread out if they start to feel too much cramped.</p>
-
-        <p>If you want to see them better, you can click the button right next to this one to bring the demo to the foreground (you can click it again to bring it back in the background).</p>
-      </div>
-
-      <div id="boids-error" class="alert alert-danger alert-dismissible text-justify" role="alert" style="display:none;">
-        <button type="button" class="close" onclick="$('#boids-error').hide();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        This site should show a cool demo of the <a href="https://en.wikipedia.org/wiki/Boids" class="alert-link">boids program</a>, a simple example of self-organized system, but it seems to be a little too heavy on you browser so the demo was disabled to avoid degrading your performances. You can try to re-enable the demo by hitting the reload button just beside this one.
+      <div id="infobox">
       </div>
 
       <div class="main moveable row">
@@ -513,6 +502,24 @@
         </div><!-- /.blog-sidebar -->
       </div><!-- /.row -->
     </div><!-- /.container -->
+
+    <!-- This template will be instanciated at the top only if js activated.
+         This is done so to provide a cleaner experience when using weird web client such as lynx or w3m -->
+    <template id="infobox-template">
+        <div id="boids-info" class="alert alert-info alert-dismissible text-justify" role="alert" style="display:none;">
+            <button type="button" class="close" onclick="$('#boids-info').hide();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <p>In the background you see an implementation of the <a href="https://en.wikipedia.org/wiki/Boids" class="alert-link">boids program</a>, simulating the flocking behavior of animals such as birds or fish.</p>
+            <p>This program is an example of a very simple self-organized system. The movements of the boids are not decided by a central controller, but locally by the boids themselves.</p>
+            <p>In a confined space, the boids will eventually converge towards a single, large swarm. Since it would be a little boring, the model here is modified slightly for the boids to spread out if they start to feel too much cramped.</p>
+
+            <p>If you want to see them better, you can click the button right next to this one to bring the demo to the foreground (you can click it again to bring it back in the background).</p>
+        </div>
+
+        <div id="boids-error" class="alert alert-danger alert-dismissible text-justify" role="alert" style="display:none;">
+            <button type="button" class="close" onclick="$('#boids-error').hide();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            This site should show a cool demo of the <a href="https://en.wikipedia.org/wiki/Boids" class="alert-link">boids program</a>, a simple example of self-organized system, but it seems to be a little too heavy on you browser so the demo was disabled to avoid degrading your performances. You can try to re-enable the demo by hitting the reload button just beside this one.
+        </div>
+    </template>
 
     <!-- this go at the end to speed up page load -->
     <script src="js/modernizr.custom.86055.js"></script>

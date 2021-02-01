@@ -2,6 +2,11 @@
 $('body').addClass('js-enabled');
 $('body').removeClass('js-disabled');
 
+// transform infobox template to actual content (only relevant if we have js)
+let template = document.querySelector("#infobox-template");
+let infobox = template.content.cloneNode(true);
+$('#infobox').append(infobox);
+
 function SwarmControl(canvas, buffer) {
 
   var that = this;
