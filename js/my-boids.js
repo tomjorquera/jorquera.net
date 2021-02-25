@@ -1,47 +1,44 @@
-function Swarm(canvas, buffer) {
+var NB_BOIDS = 50;
+var BOID_FOV = 50;
+var BOID_SPEED = 2;
+var BOID_INERTIA = 0.8;
 
-  var context = buffer.getContext('2d');
+var BOID_FLEE = 250;
+var BOID_FLEE_RATIO = 0.66;
 
-  // some margin for the scrollbar
-  var width = window.innerWidth - 20;
-  var height = window.innerHeight;
+var SEP_COEFF = 1 * (1 - BOID_INERTIA);
+var ALI_COEFF = 1 * (1 - BOID_INERTIA);
+var COH_COEFF = 1 * (1 - BOID_INERTIA);
 
-  var NB_BOIDS = 50;
-  var BOID_FOV = 50;
-  var BOID_SPEED = 2;
-  var BOID_INERTIA = 0.8;
+var BORDER_PADDING = 8;
 
-  var BOID_FLEE = 250;
-  var BOID_FLEE_RATIO = 0.66;
+var radius = 6;
+var queueLength = radius * 2.5;
 
-  var flee = 0;
-
-  var SEP_COEFF = 1 * (1 - BOID_INERTIA);
-  var ALI_COEFF = 1 * (1 - BOID_INERTIA);
-  var COH_COEFF = 1 * (1 - BOID_INERTIA);
-
-  var BORDER_PADDING = 8;
-
-  var radius = 6;
-  var queueLength = radius * 2.5;
-
-  var boids = []; // the boids
-  for(var i = 0; i < NB_BOIDS; i++) {
-    boids.push(new Boid());
+// limit the magnitude of a vector without changing its direction
+vec2.limit = function(out, a, n) {
+  var x = a[0],
+      y = a[1];
+  var len = x*x + y*y;
+  if (len > n * n) {
+    len = n / Math.sqrt(len);
+    out[0] = a[0] * len;
+    out[1] = a[1] * len;
   }
+  return out;
+};
 
-  function Boid() {
-    this.pos = vec2.fromValues(Math.random() * width,
-                               Math.random() * height);
-    var vx = -2 + 4 * Math.random();
-    var vy = -2 + 4 * Math.random();
+function Boid(width, height) {
+  this.pos = vec2.fromValues(Math.random() * width,
+                             Math.random() * height);
+  var vx = -2 + 4 * Math.random();
+  var vy = -2 + 4 * Math.random();
 
-    // ensure acceptable min speed
-    if(Math.abs(vx) < 0.5) vx = vx/Math.abs(vx) * 0.5;
-    if(Math.abs(vy) < 0.5) vy = vy/Math.abs(vy) * 0.5;
+  // ensure acceptable min speed
+  if(Math.abs(vx) < 0.5) vx = vx/Math.abs(vx) * 0.5;
+  if(Math.abs(vy) < 0.5) vy = vy/Math.abs(vy) * 0.5;
 
-    this.velocity = vec2.fromValues(vx, vy);
-  }
+  this.velocity = vec2.fromValues(vx, vy);
 
   Boid.prototype.undraw = function(ctx) {
     // remove old boid
@@ -83,7 +80,7 @@ function Swarm(canvas, buffer) {
 
   };
 
-  Boid.prototype.checkBorders = function() {
+  Boid.prototype.checkBorders = function(width, height) {
     var correction = vec2.create();
 
     if(this.pos[0] < BORDER_PADDING) {
@@ -103,21 +100,20 @@ function Swarm(canvas, buffer) {
     vec2.limit(this.velocity, this.velocity, BOID_SPEED);
   };
 
-  Boid.prototype.step = function() {
-
+  Boid.prototype.step = function(swarm) {
     var nbNeighbors = 0;
 
     var separate = vec2.fromValues(0,0);
     var align = vec2.fromValues(0, 0);
     var cohere = vec2.fromValues(0,0);
 
-    for(var i = 0; i < boids.length; i++) {
+    for(var i = 0; i < swarm.boids.length; i++) {
 
-      var n = boids[i];
+      var n = swarm.boids[i];
 
       var dist = vec2.distance(this.pos, n.pos);
       if(   dist <= BOID_FOV
-            && this != boids[i]
+            && this != n
         ) {
 
         nbNeighbors++;
@@ -135,7 +131,6 @@ function Swarm(canvas, buffer) {
 
         // cohere
         vec2.add(cohere, cohere, n.pos);
-
       }
     }
 
@@ -151,9 +146,9 @@ function Swarm(canvas, buffer) {
       vec2.scale(separate, separate, 1/nbNeighbors);
       vec2.normalize(separate, separate);
 
-      if(nbNeighbors > boids.length * BOID_FLEE_RATIO && flee == 0) {
+      if(nbNeighbors > swarm.boids.length * BOID_FLEE_RATIO && swarm.flee == 0) {
         // things getting too crowded here, better split up
-        flee = BOID_FLEE;
+        swarm.flee = BOID_FLEE;
         COH_COEFF *= -1;
       }
       // scale and apply forces
@@ -166,7 +161,6 @@ function Swarm(canvas, buffer) {
       vec2.add(acc, acc, align);
       vec2.add(acc, acc, cohere);
 
-
       // update velocity
       vec2.add(this.velocity, this.velocity, acc);
       vec2.limit(this.velocity, this.velocity, BOID_SPEED);
@@ -175,78 +169,48 @@ function Swarm(canvas, buffer) {
     // move
     this.pos = vec2.add(vec2.create(), this.pos, this.velocity);
 
-    this.checkBorders();
+    this.checkBorders(swarm.width, swarm.height);
   };
+}
 
-  // limit the magnitude of a vector without changing its direction
-  vec2.limit = function(out, a, n) {
-    var x = a[0],
-        y = a[1];
-    var len = x*x + y*y;
-    if (len > n * n) {
-      len = n / Math.sqrt(len);
-      out[0] = a[0] * len;
-      out[1] = a[1] * len;
-    }
-    return out;
-  };
+function Swarm() {
 
-  Swarm.prototype.prepare = function(canvas) {
-    // adjust canvas if needed
-    if (buffer.width != window.innerWidth ||
-        buffer.height != window.innerHeight) {
-      // some margin for the scrollbar
-      width = window.innerWidth - 20;
-      height = window.innerHeight;
+  // some margin for the scrollbar
+  this.width = window.innerWidth - 20;
+  this.height = window.innerHeight;
 
-      buffer.width = window.innerWidth;
-      buffer.height = window.innerHeight;
+  this.flee = 0;
 
-      context.fillStyle = 'white';
-      context.fillRect(0, 0, window.innerWidth, window.innerHeight);
-
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    // remove old boids
-    for (i = 0; i < boids.length; i++) {
-      boid = boids[i];
-      boid.undraw(context);
-    }
+  this.boids = []; // the boids
+  for(var i = 0; i < NB_BOIDS; i++) {
+    this.boids.push(new Boid(this.width, this.height));
   }
 
-  Swarm.prototype.updateState = function() {
+  Swarm.prototype.step = function(width, height) {
+    this.width = width;
+    this.height = height;
+
     var i, boid;
 
     // move boids
-    for (i = 0; i < boids.length; i++) {
-      boid = boids[i];
-      boid.step();
+    for (i = 0; i < this.boids.length; i++) {
+      boid = this.boids[i];
+      boid.step(this);
     }
 
-    if (flee > 0) {
-      flee--;
-      if (flee == 0) {
+    if (this.flee > 0) {
+      this.flee--;
+      if (this.flee == 0) {
         COH_COEFF *= -1;
       }
     }
   };
 
-  Swarm.prototype.draw = function(canvas) {
-    for (i = 0; i < boids.length; i++) {
-      boid = boids[i];
-      boid.draw(context);
-    }
-
-    // draw buffer into canvas
-    canvas.getContext('2d').drawImage(buffer,0,0);
+  Swarm.prototype.size = function() {
+    return this.boids.length;
   }
 
-
-  Swarm.prototype.step = function() {
-      this.prepare(canvas);
-      this.updateState();
-      this.draw(canvas);
-  };
+  Swarm.prototype.boid = function(index) {
+    return this.boids[index];
+  }
 }

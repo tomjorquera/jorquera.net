@@ -7,6 +7,45 @@ let template = document.querySelector("#infobox-template");
 let infobox = template.content.cloneNode(true);
 $('#infobox').append(infobox);
 
+function SwarmDrawer(swarm, canvas, buffer) {
+  var context = buffer.getContext('2d');
+
+  SwarmDrawer.prototype.prepare = function() {
+    // adjust canvas if needed
+    if (buffer.width != window.innerWidth ||
+        buffer.height != window.innerHeight) {
+      // some margin for the scrollbar
+      this.width = window.innerWidth - 20;
+      this.height = window.innerHeight;
+
+      buffer.width = window.innerWidth;
+      buffer.height = window.innerHeight;
+
+      context.fillStyle = 'white';
+      context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    // remove old boids
+    for (i = 0; i < swarm.size(); i++) {
+      boid = swarm.boid(i);
+      boid.undraw(context);
+    }
+  }
+
+  SwarmDrawer.prototype.draw = function() {
+    for (i = 0; i < swarm.size(); i++) {
+      boid = swarm.boid(i);
+      boid.draw(context);
+    }
+
+    // draw buffer into canvas
+    canvas.getContext('2d').drawImage(buffer,0,0);
+  }
+}
+
 function SwarmControl(canvas, buffer) {
 
   var that = this;
@@ -51,15 +90,17 @@ function SwarmControl(canvas, buffer) {
           timeUnderFPSBound++;
         }
         return result;
-
       }
     };
 
     var timer;
-    var swarm = new Swarm(canvas, buffer);
+    var swarm = new Swarm();
+    var swarmDrawer = new SwarmDrawer(swarm, canvas, buffer)
 
     var step = function(){
-      swarm.step();
+      swarmDrawer.prepare();
+      swarm.step(swarmDrawer.width, swarmDrawer.height);
+      swarmDrawer.draw();
 
       //check FPS
       fps.getFPS();
