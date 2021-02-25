@@ -191,7 +191,7 @@ function Swarm(canvas, buffer) {
     return out;
   };
 
-  Swarm.prototype.step = function() {
+  Swarm.prototype.prepare = function(canvas) {
     // adjust canvas if needed
     if (buffer.width != window.innerWidth ||
         buffer.height != window.innerHeight) {
@@ -209,19 +209,20 @@ function Swarm(canvas, buffer) {
       canvas.height = window.innerHeight;
     }
 
-    var i, boid;
-
     // remove old boids
     for (i = 0; i < boids.length; i++) {
       boid = boids[i];
       boid.undraw(context);
     }
+  }
+
+  Swarm.prototype.updateState = function() {
+    var i, boid;
 
     // move boids
     for (i = 0; i < boids.length; i++) {
       boid = boids[i];
       boid.step();
-      boid.draw(context);
     }
 
     if (flee > 0) {
@@ -230,10 +231,22 @@ function Swarm(canvas, buffer) {
         COH_COEFF *= -1;
       }
     }
+  };
+
+  Swarm.prototype.draw = function(canvas) {
+    for (i = 0; i < boids.length; i++) {
+      boid = boids[i];
+      boid.draw(context);
+    }
 
     // draw buffer into canvas
     canvas.getContext('2d').drawImage(buffer,0,0);
+  }
 
+
+  Swarm.prototype.step = function() {
+      this.prepare(canvas);
+      this.updateState();
+      this.draw(canvas);
   };
-
 }
