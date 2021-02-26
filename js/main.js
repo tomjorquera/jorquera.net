@@ -1,3 +1,8 @@
+import * as boids from "../node_modules/boids/boids.js";
+
+var radius = 6;
+var queueLength = radius * 2.5;
+
 // ensure that the page will degrade gracefully when no js
 $('body').addClass('js-enabled');
 $('body').removeClass('js-disabled');
@@ -14,36 +19,52 @@ function SwarmDrawer(swarm, canvas, buffer) {
     // adjust canvas if needed
     if (buffer.width != window.innerWidth ||
         buffer.height != window.innerHeight) {
-      // some margin for the scrollbar
-      this.width = window.innerWidth - 20;
-      this.height = window.innerHeight;
-
       buffer.width = window.innerWidth;
       buffer.height = window.innerHeight;
-
-      context.fillStyle = 'white';
-      context.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
 
     // remove old boids
-    for (i = 0; i < swarm.size(); i++) {
-      boid = swarm.boid(i);
-      boid.undraw(context);
-    }
-  }
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  };
 
   SwarmDrawer.prototype.draw = function() {
-    for (i = 0; i < swarm.size(); i++) {
-      boid = swarm.boid(i);
-      boid.draw(context);
+    for (let i = 0; i < swarm.size(); i++) {
+      let boid = swarm.boid(i);
+      this.drawBoid(boid, context);
     }
 
     // draw buffer into canvas
     canvas.getContext('2d').drawImage(buffer,0,0);
-  }
+  };
+
+  SwarmDrawer.prototype.drawBoid = function(boid, ctx) {
+    ctx.fillStyle = 'blue';
+    ctx.strokeStyle = 'blue';
+
+    var b = vec2.fromValues(-1* boid.vy(), boid.vx());
+    vec2.scale(b, b, radius / Math.sqrt(b[0]*b[0] + b[1]*b[1]));
+    var b0 = vec2.add(vec2.create(), vec2.fromValues(boid.x(), boid.y()), b);
+    var b1 = vec2.sub(vec2.create(), vec2.fromValues(boid.x(), boid.y()), b);
+    var queue = vec2.scale(vec2.create(), vec2.fromValues(boid.vx(), boid.vy()), -1 * queueLength);
+
+    if(vec2.length(queue) < queueLength) {
+      // ensure the boid will not be too small
+      vec2.scale(queue, vec2.normalize(queue, queue), queueLength);
+    }
+
+    //place the queue at the position of the boid
+    vec2.add(queue, vec2.fromValues(boid.x(), boid.y()), queue);
+
+    ctx.beginPath();
+    ctx.moveTo(queue[0], queue[1]);
+    ctx.lineTo(b0[0], b0[1]);
+    ctx.lineTo(b1[0], b1[1]);
+    ctx.fill();
+  };
 }
 
 function SwarmControl(canvas, buffer) {
@@ -94,12 +115,14 @@ function SwarmControl(canvas, buffer) {
     };
 
     var timer;
-    var swarm = new Swarm();
+    var swarm = boids.Swarm.new(window.innerWidth - 20, // some margin for the scrollbar
+                                window.innerHeight);
     var swarmDrawer = new SwarmDrawer(swarm, canvas, buffer)
 
     var step = function(){
       swarmDrawer.prepare();
-      swarm.step(swarmDrawer.width, swarmDrawer.height);
+      swarm.step(window.innerWidth - 20, // some margin for the scrollbar
+                 window.innerHeight);
       swarmDrawer.draw();
 
       //check FPS
@@ -112,7 +135,7 @@ function SwarmControl(canvas, buffer) {
 
     timer = setInterval(step, 50);
 
-    SwarmUI.inactive();
+    swarmUI.inactive();
   };
 
   SwarmControl.prototype.stop = function(timer) {
@@ -120,7 +143,7 @@ function SwarmControl(canvas, buffer) {
     canvas.style.display="none";
     canvas.style.opacity=0;
     canvas.filter = "alpha(opacity=0);"; /* For IE8 and earlier */
-    SwarmUI.error();
+    swarmUI.error();
   };
 }
 
@@ -138,7 +161,7 @@ function SwarmUI() {
 
     $(".bg-button").removeClass('moved');
     $(".bg-button").removeClass('sec-button');
-    $(".bg-button").attr("onclick","SwarmUI.toggleActive();");
+    $(".bg-button").attr("onclick","swarmUI.toggleActive();");
     $(".info-button").removeClass('moved');
     $(".info-button").removeClass('sec-button');
     $(".info-button").attr("onclick","$('#boids-info').toggle();");
@@ -162,7 +185,7 @@ function SwarmUI() {
 
     $(".bg-button").addClass('moved');
     $(".bg-button").removeClass('sec-button');
-    $(".bg-button").attr("onclick","SwarmUI.toggleActive();");
+    $(".bg-button").attr("onclick","swarmUI.toggleActive();");
     $(".info-button").addClass('moved');
     $(".info-button").removeClass('sec-button');
     $(".info-button").attr("onclick","$('#boids-info').toggle();");
@@ -193,7 +216,7 @@ function SwarmUI() {
     $(".error-button").addClass('moved');
     $(".error-button").attr("onclick","$('#boids-error').toggle();");
     $(".reload-button").addClass('moved');
-    $(".reload-button").attr("onclick","SwarmControl.start();");
+    $(".reload-button").attr("onclick","swarmControl.start();");
 
     if($('#boids-info').is(":visible")){
       $('#boids-info').hide();
@@ -211,9 +234,6 @@ function SwarmUI() {
     error ? this.inactive() : this.error();
   };
 }
-
-var SwarmControl;
-var SwarmUI;
 
 $(document).ready( function() {
 
@@ -247,9 +267,9 @@ $(document).ready( function() {
 
   var buffer = document.createElement('canvas');
 
-  SwarmUI = new SwarmUI();
-  SwarmControl = new SwarmControl(canvas, buffer);
+  window.swarmUI = new SwarmUI();
+  window.swarmControl = new SwarmControl(canvas, buffer);
   //let's rock!
-  SwarmControl.start();
+  swarmControl.start();
 
 });

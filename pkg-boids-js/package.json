@@ -1,0 +1,13 @@
+
+{
+  "name": "boids",
+  "collaborators": [
+    "Tom Jorquera <tom@jorquera.net>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "boids.js"
+  ],
+  "module": "boids.js",
+  "sideEffects": false
+}

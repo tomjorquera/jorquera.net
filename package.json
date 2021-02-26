@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "boids": "file:./pkg-boids-js",
         "bootstrap": "^3.4",
         "font-awesome": "^4.3",
         "gl-matrix": "^2.4",

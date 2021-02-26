@@ -12,9 +12,6 @@ var COH_COEFF = 1 * (1 - BOID_INERTIA);
 
 var BORDER_PADDING = 8;
 
-var radius = 6;
-var queueLength = radius * 2.5;
-
 // limit the magnitude of a vector without changing its direction
 vec2.limit = function(out, a, n) {
   var x = a[0],
@@ -28,59 +25,37 @@ vec2.limit = function(out, a, n) {
   return out;
 };
 
-function Boid(width, height) {
-  this.pos = vec2.fromValues(Math.random() * width,
-                             Math.random() * height);
-  var vx = -2 + 4 * Math.random();
-  var vy = -2 + 4 * Math.random();
+class Boid {
+  constructor(width, height) {
+    this.pos = vec2.fromValues(Math.random() * width,
+                               Math.random() * height);
+    var vx = -2 + 4 * Math.random();
+    var vy = -2 + 4 * Math.random();
 
-  // ensure acceptable min speed
-  if(Math.abs(vx) < 0.5) vx = vx/Math.abs(vx) * 0.5;
-  if(Math.abs(vy) < 0.5) vy = vy/Math.abs(vy) * 0.5;
+    // ensure acceptable min speed
+    if(Math.abs(vx) < 0.5) vx = vx/Math.abs(vx) * 0.5;
+    if(Math.abs(vy) < 0.5) vy = vy/Math.abs(vy) * 0.5;
 
-  this.velocity = vec2.fromValues(vx, vy);
+    this.velocity = vec2.fromValues(vx, vy);
+  }
 
-  Boid.prototype.undraw = function(ctx) {
-    // remove old boid
-    ctx.fillStyle = 'white';
-    ctx.strokeStyle = 'white';
-    ctx.beginPath();
-    // round coordinates to integer (huge speedup on canvas)
-    ctx.arc((this.pos[0] + 0.5)|0,
-            (this.pos[1] + 0.5)|0,
-            BOID_SPEED * queueLength + radius, 0, 2 *
-            Math.PI);
-    ctx.fill();
-  };
+  x() {
+    return this.pos[0];
+  }
 
-  Boid.prototype.draw = function(ctx) {
+  y() {
+    return this.pos[1];
+  }
 
-    ctx.fillStyle = 'blue';
-    ctx.strokeStyle = 'blue';
+  vx() {
+    return this.velocity[0];
+  }
 
-    var b = vec2.fromValues(-1* this.velocity[1], this.velocity[0]);
-    vec2.scale(b, b, radius / Math.sqrt(b[0]*b[0] + b[1]*b[1]));
-    var b0 = vec2.add(vec2.create(), this.pos, b);
-    var b1 = vec2.sub(vec2.create(), this.pos, b);
-    var queue = vec2.scale(vec2.create(), this.velocity, -1 * queueLength);
+  vy() {
+    return this.velocity[1];
+  }
 
-    if(vec2.length(queue) < queueLength) {
-      // ensure the boid will not be too small
-      vec2.scale(queue, vec2.normalize(queue, queue), queueLength);
-    }
-
-    //place the queue at the position of the boid
-    vec2.add(queue, this.pos, queue);
-
-    ctx.beginPath();
-    ctx.moveTo(queue[0], queue[1]);
-    ctx.lineTo(b0[0], b0[1]);
-    ctx.lineTo(b1[0], b1[1]);
-    ctx.fill();
-
-  };
-
-  Boid.prototype.checkBorders = function(width, height) {
+  checkBorders(width, height) {
     var correction = vec2.create();
 
     if(this.pos[0] < BORDER_PADDING) {
@@ -100,7 +75,7 @@ function Boid(width, height) {
     vec2.limit(this.velocity, this.velocity, BOID_SPEED);
   };
 
-  Boid.prototype.step = function(swarm) {
+  step(swarm) {
     var nbNeighbors = 0;
 
     var separate = vec2.fromValues(0,0);
@@ -173,20 +148,25 @@ function Boid(width, height) {
   };
 }
 
-function Swarm() {
+export class Swarm {
+  constructor(width, height) {
+    // some margin for the scrollbar
+    this.width = width;
+    this.height = height;
 
-  // some margin for the scrollbar
-  this.width = window.innerWidth - 20;
-  this.height = window.innerHeight;
+    this.flee = 0;
 
-  this.flee = 0;
-
-  this.boids = []; // the boids
-  for(var i = 0; i < NB_BOIDS; i++) {
-    this.boids.push(new Boid(this.width, this.height));
+    this.boids = []; // the boids
+    for(var i = 0; i < NB_BOIDS; i++) {
+      this.boids.push(new Boid(this.width, this.height));
+    }
   }
 
-  Swarm.prototype.step = function(width, height) {
+  static new(width, height) {
+    return new Swarm(width, height);
+  }
+
+  step(width, height) {
     this.width = width;
     this.height = height;
 
@@ -206,11 +186,11 @@ function Swarm() {
     }
   };
 
-  Swarm.prototype.size = function() {
+  size() {
     return this.boids.length;
   }
 
-  Swarm.prototype.boid = function(index) {
+  boid(index) {
     return this.boids[index];
   }
 }
